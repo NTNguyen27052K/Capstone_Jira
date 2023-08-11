@@ -21,6 +21,7 @@ const HomeTemplate = () => {
           collapsible
           collapsed={false}
           className="px-2 min-h-screen"
+          id="siderMain"
           theme="light"
         >
           {/* mb-[24px] */}
@@ -49,6 +50,16 @@ const HomeTemplate = () => {
                 label: <NavLink to={"createProject"}>Create project</NavLink>,
                 onClick: () => {
                   setBreadcrumb("Create Project");
+                },
+              },
+              {
+                key: "3",
+                icon: <i className="fa-solid fa-table-list"></i>,
+                label: (
+                  <NavLink to={"projectManagement"}>Project management</NavLink>
+                ),
+                onClick: () => {
+                  setBreadcrumb("Project management");
                 },
               },
               {

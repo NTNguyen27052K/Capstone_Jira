@@ -4,6 +4,8 @@ import HomeTemplate from "./Template/HomeTemplate/HomeTemplate";
 import CreateProject from "./Components/CreateProject/CreateProject";
 import Test from "./Template/Test";
 import FormSignIn from "./Components/FormSignIn/FormSignIn";
+import ProjectManagement from "./Components/ProjectManagement/ProjectManagement";
+import UpdateProject from "./Components/UpdateProject/UpdateProject";
 
 function App() {
   return (
@@ -12,10 +14,15 @@ function App() {
         <Route path="/" element={<FormSignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        <Route path="/projectmanagement" element={<HomeTemplate />}>
+        <Route path="/project" element={<HomeTemplate />}>
           <Route index element={<CreateProject />} />
           <Route path="createProject" element={<CreateProject />} />
           <Route path="test" element={<Test />} />
+          <Route path="projectManagement" element={<ProjectManagement />} />
+          <Route
+            path="projectManagement/edit/:id"
+            element={<UpdateProject />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

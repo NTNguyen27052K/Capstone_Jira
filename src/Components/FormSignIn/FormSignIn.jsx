@@ -27,7 +27,7 @@ const FormSignIn = () => {
           setLocal("userLocal", result.data.content);
           dispatch(setDataName(result.data.content));
           setTimeout(() => {
-            navigate("/projectmanagement");
+            navigate("/project");
           }, [2000]);
         })
         .catch((error) => {
