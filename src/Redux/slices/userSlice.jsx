@@ -18,7 +18,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setDataName: (state, action) => {
-      console.log(state);
+      // console.log(state);
       if (state.name == null) {
         state.name = action.payload;
       }

@@ -10,17 +10,18 @@ import { getProjectDetail } from "../../Redux/slices/projectSliece";
 
 const UpdateProject = () => {
   const dispatch = useDispatch();
-  const params = useParams();
+  const { id } = useParams();
   const projectDetail = useSelector((state) => state.project.projectDetail);
-  const [producState, setpPoducState] = useState([]);
+  console.log(projectDetail);
+  const [producState, setpPoducState] = useState();
 
   useEffect(() => {
-    // console.log("test1");
-    dispatch(getProjectDetail(params.id));
-    formik.setValues({
-      ...projectDetail,
-      categoryId: projectDetail?.projectCategory.id,
-    });
+    dispatch(getProjectDetail(id));
+
+    // formik.setValues({
+    //   ...projectDetail,
+    //   categoryId: projectDetail.projectCategory.id,
+    // });
     // console.log(params.id);
     // projectServ
     //   .getProjectDetail(params.id)
