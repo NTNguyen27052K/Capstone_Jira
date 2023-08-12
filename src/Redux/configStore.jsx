@@ -8,6 +8,5 @@ export const store = configureStore({
     users: userSlice,
     projectCategory: projectCategorySlice,
     project: projectSlice,
-    // projectDetail: listProjectSlice,
   },
 });

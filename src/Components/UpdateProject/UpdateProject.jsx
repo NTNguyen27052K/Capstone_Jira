@@ -4,7 +4,7 @@ import { getProjectCategory } from "../../Redux/slices/projectCategorySlice";
 import { useFormik } from "formik";
 import { Input } from "antd";
 import { Editor } from "@tinymce/tinymce-react";
-import { projectServ } from "../../Services/projectServices";
+
 import { useParams } from "react-router-dom";
 import { getProjectDetail } from "../../Redux/slices/projectSliece";
 
@@ -12,31 +12,30 @@ const UpdateProject = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const projectDetail = useSelector((state) => state.project.projectDetail);
-  console.log(projectDetail);
-  const [producState, setpPoducState] = useState();
 
+  console.log(projectDetail);
+  console.log(id);
   useEffect(() => {
     dispatch(getProjectDetail(id));
+    // console.log(projectDetail);
 
-    // formik.setValues({
-    //   ...projectDetail,
-    //   categoryId: projectDetail.projectCategory.id,
-    // });
-    // console.log(params.id);
-    // projectServ
-    //   .getProjectDetail(params.id)
-    //   .then((result) => {
-    //     console.log(result);
-    //     // formik.setValues({
-    //     //   ...projectDetail,
-    //     //   categoryId: projectDetail?.projectCategory.id,
-    //     // });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
+    // if (Object.keys(projectDetail).length !== 0) {
+    //   console.log("aaaaaaaaaaaaaaaaa");
+    //   formik.setValues({
+    //     ...projectDetail,
+    //     categoryId: projectDetail.projectCategory.id,
     //   });
-  }, []);
+    // }
+    formik.setValues({
+      ...projectDetail,
+      categoryId: projectDetail.projectCategory.id,
+    });
 
+    // Object.keys(projectDetail).length
+  }, [id]);
+
+  //   // Object.keys(projectDetail).length
+  // }, []);
   const formik = useFormik({
     initialValues: {
       projectName: "",
@@ -59,6 +58,7 @@ const UpdateProject = () => {
   } = formik;
   return (
     <form onSubmit={handleSubmit} className="">
+      {console.log("render")}
       <h2 className="text-xl font-bold mb-3">Edit project</h2>
 
       <div className="mb-3">

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { projectServ } from "../../Services/projectServices";
+import { useState } from "react";
 
 export const getAllProject = createAsyncThunk(
   "project/listProject/getAllProject",
@@ -8,10 +9,12 @@ export const getAllProject = createAsyncThunk(
     return res.data.content;
   }
 );
+
 export const getProjectDetail = createAsyncThunk(
   "project/projectDetail/getProjectDetail",
   async (data) => {
     const res = await projectServ.getProjectDetail(data);
+    console.log(res);
     return res.data.content;
   }
 );
@@ -19,6 +22,7 @@ const initialState = {
   listProject: [],
   projectDetail: [],
 };
+
 export const projectSlice = createSlice({
   name: "project",
   initialState,
