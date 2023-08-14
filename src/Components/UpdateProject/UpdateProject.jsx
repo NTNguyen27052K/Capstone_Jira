@@ -7,16 +7,17 @@ import { Editor } from "@tinymce/tinymce-react";
 
 import { useParams } from "react-router-dom";
 import { getProjectDetail } from "../../Redux/slices/projectSliece";
+import { projectServ } from "../../Services/projectServices";
 
 const UpdateProject = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const projectDetail = useSelector((state) => state.project.projectDetail);
+  // const projectDetail = useSelector((state) => state.project.projectDetail);
 
-  console.log(projectDetail);
-  console.log(id);
+  // console.log(projectDetail);
+  // console.log(id);
   useEffect(() => {
-    dispatch(getProjectDetail(id));
+    // dispatch(getProjectDetail(id));
     // console.log(projectDetail);
 
     // if (Object.keys(projectDetail).length !== 0) {
@@ -26,24 +27,57 @@ const UpdateProject = () => {
     //     categoryId: projectDetail.projectCategory.id,
     //   });
     // }
-    formik.setValues({
-      ...projectDetail,
-      categoryId: projectDetail.projectCategory.id,
-    });
+    projectServ
+      .getProjectDetail(id)
+      .then((result) => {
+        console.log("aaaaa");
+        console.log(result);
+        formik.setValues({
+          ...result.data.content,
+          categoryId: result.data.content.projectCategory.id,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     // Object.keys(projectDetail).length
   }, [id]);
 
-  //   // Object.keys(projectDetail).length
-  // }, []);
   const formik = useFormik({
     initialValues: {
       projectName: "",
       description: "",
       categoryId: "",
       alias: "",
+      id: "",
     },
-    onSubmit: (values) => {},
+    onSubmit: (values) => {
+      // console.log({
+      //   ...values,
+      //   id: values.id,
+      //   projectName: values.projectName,
+      //   creator: values.creator.id,
+      //   description: editorRef.current.getContent(),
+      //   categoryId: values.categoryId,
+      //   projectCategory: values.projectCategory.id,
+      // });
+      projectServ
+        .updateProject(id, {
+          ...values,
+          id: values.id,
+          projectName: values.projectName,
+          creator: values.creator.id,
+          description: editorRef.current.getContent(),
+          categoryId: values.categoryId,
+        })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   });
   const editorRef = useRef(null);
 
@@ -63,6 +97,18 @@ const UpdateProject = () => {
 
       <div className="mb-3">
         <label className="block mb-2 text-sm font-medium text-gray-900">
+          Id
+        </label>
+        <Input
+          type="text"
+          name="id"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          className="py-2 font-bold"
+          value={values.id}
+          disabled={true}
+        />
+        <label className="block mb-2 text-sm font-medium text-gray-900">
           Project Name
         </label>
         <Input
@@ -77,7 +123,7 @@ const UpdateProject = () => {
         <div className="my-3">
           <Editor
             name="description"
-            value={values.description}
+            // value={values.description}
             className="h-10"
             onInit={(evt, editor) => (editorRef.current = editor)}
             initialValue={values.description}

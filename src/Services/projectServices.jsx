@@ -17,4 +17,7 @@ export const projectServ = {
   deleteProject: (data) => {
     return https.delete(`/api/Project/deleteProject?projectId=${data}`);
   },
+  updateProject: (id, data) => {
+    return https.put(`/api/Project/updateProject?projectId=${id}`, data);
+  },
 };

@@ -8,7 +8,10 @@ import { Space, Table, Tag } from "antd";
 import ColumnGroup from "antd/es/table/ColumnGroup";
 import { projectServ } from "../../Services/projectServices";
 import { NavLink } from "react-router-dom";
-import { useFormik } from "formik";
+import "./projectManagement.scss";
+import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
+
+import { Avatar, Divider, Tooltip } from "antd";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
@@ -18,15 +21,16 @@ const ProjectManagement = () => {
 
   const { listProject } = useSelector((state) => state.project);
   // console.log(listProject);
-  const formik = useFormik({
-    initialValues: {
-      projectName: "",
-      description: "",
-      categoryId: "",
-      alias: "",
-    },
-    onSubmit: (values) => {},
-  });
+  // const formik = useFormik({
+  //   initialValues: {
+  //     projectName: "",
+  //     description: "",
+  //     categoryId: "",
+  //     alias: "",
+  //     id: "",
+  //   },
+  //   onSubmit: (values) => {},
+  // });
   const columns = [
     {
       title: "Id",
@@ -64,6 +68,19 @@ const ProjectManagement = () => {
       title: "Members",
       dataIndex: "members",
       key: "members",
+      /* <img
+                  key={index}
+                  className="w-10 h-10 rounded-full"
+                  src={item.avatar}
+                  alt=""
+                /> */
+      // <AvatarGroup isBordered max={3} total={10}>
+      //   <Avatar
+      //     key={index}
+      //     src={item.avatar}
+      //     className="w-10 h-10 rounded-full"
+      //   />
+      // </AvatarGroup>
       render: (text, index) => {
         return (
           <span key={index}>
