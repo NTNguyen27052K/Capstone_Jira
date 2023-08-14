@@ -20,17 +20,7 @@ const ProjectManagement = () => {
   }, []);
 
   const { listProject } = useSelector((state) => state.project);
-  // console.log(listProject);
-  // const formik = useFormik({
-  //   initialValues: {
-  //     projectName: "",
-  //     description: "",
-  //     categoryId: "",
-  //     alias: "",
-  //     id: "",
-  //   },
-  //   onSubmit: (values) => {},
-  // });
+
   const columns = [
     {
       title: "Id",
@@ -68,33 +58,25 @@ const ProjectManagement = () => {
       title: "Members",
       dataIndex: "members",
       key: "members",
-      /* <img
-                  key={index}
-                  className="w-10 h-10 rounded-full"
-                  src={item.avatar}
-                  alt=""
-                /> */
-      // <AvatarGroup isBordered max={3} total={10}>
-      //   <Avatar
-      //     key={index}
-      //     src={item.avatar}
-      //     className="w-10 h-10 rounded-full"
-      //   />
-      // </AvatarGroup>
-      render: (text, index) => {
+
+      render: (text, record, index) => {
         return (
-          <span key={index}>
+          <Avatar.Group
+            key={index}
+            maxCount={2}
+            maxStyle={{
+              color: "#f56a00",
+              backgroundColor: "#fde3cf",
+            }}
+          >
             {text.map((item, index) => {
               return (
-                <img
-                  key={index}
-                  className="w-10 h-10 rounded-full"
-                  src={item.avatar}
-                  alt=""
-                />
+                <Tooltip placement="top" key={index} title={item.name}>
+                  <Avatar src={item.avatar} />
+                </Tooltip>
               );
             })}
-          </span>
+          </Avatar.Group>
         );
       },
     },

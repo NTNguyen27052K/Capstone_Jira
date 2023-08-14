@@ -1,6 +1,6 @@
 import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
-import { Avatar, Divider, Tooltip } from "antd";
+import { Avatar, Tooltip } from "antd";
 
 const Test = () => {
   return (
@@ -12,7 +12,10 @@ const Test = () => {
           backgroundColor: "#fde3cf",
         }}
       >
-        <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=2" />
+        <Tooltip placement="top" title={"ntn"}>
+          <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=2" />
+        </Tooltip>
+
         <Avatar
           style={{
             backgroundColor: "#f56a00",
@@ -35,7 +38,6 @@ const Test = () => {
           icon={<AntDesignOutlined />}
         />
       </Avatar.Group>
-      <Divider />
     </>
   );
 };
