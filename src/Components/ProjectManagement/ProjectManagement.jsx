@@ -1,25 +1,95 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllProject,
-  getProjectDetail,
-} from "../../Redux/slices/projectSliece";
-import { Space, Table, Tag } from "antd";
+import { getAllProject } from "../../Redux/slices/projectSliece";
+import { Space, Table, Tag, AutoComplete } from "antd";
 import ColumnGroup from "antd/es/table/ColumnGroup";
 import { projectServ } from "../../Services/projectServices";
 import { NavLink } from "react-router-dom";
 import "./projectManagement.scss";
-import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
 
-import { Avatar, Divider, Tooltip } from "antd";
+import { Avatar, Popover, Tooltip } from "antd";
+import { userSer } from "../../Services/userServices";
+import { getListUser } from "../../Redux/slices/userSlice";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
+
+  const { listProject } = useSelector((state) => state.project);
+  const { listUser } = useSelector((state) => state.users);
+  console.log(listUser);
   useEffect(() => {
     dispatch(getAllProject());
   }, []);
 
-  const { listProject } = useSelector((state) => state.project);
+  const [value, setValue] = useState("");
+  const [options, setOptions] = useState("");
+  const [anotherOptions, setAnotherOptions] = useState([]);
+  const getPanelValue = (searchText) => {
+    return;
+  };
+  // console.log(options);
+
+  const onSelect = (value, option) => {
+    console.log(value);
+    console.log(option);
+    // userSer.assignUserProject()
+  };
+  const onChange = (data) => {
+    setValue(data);
+  };
+  // const content = (
+  //   <AutoComplete
+  //     options={listUser.map((item, index) => {
+  //       return { label: item.name, value: item.userId };
+  //     })}
+  //     style={{
+  //       width: 200,
+  //     }}
+  //     onSelect={onSelect}
+  //     // onSearch={(text) => setOptions(getPanelValue(text))}
+
+  //     onSearch={(text) => {
+  //       dispatch(getListUser(text));
+  //     }}
+  //     placeholder="input here"
+  //   />
+  // );
+  const content = (id) => {
+    return (
+      <AutoComplete
+        options={listUser.map((item, index) => {
+          return { label: item.name, value: item.userId.toString() };
+        })}
+        style={{
+          width: 200,
+        }}
+        value={options}
+        onChange={(text) => {
+          setOptions(text);
+        }}
+        onSelect={(value, option) => {
+          setOptions(option.label);
+
+          userSer
+            .assignUserProject({
+              projectId: id,
+              userId: option.value,
+            })
+            .then((result) => {
+              console.log(result);
+              dispatch(getAllProject());
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }}
+        onSearch={(text) => {
+          dispatch(getListUser(text));
+        }}
+        placeholder="input here"
+      />
+    );
+  };
 
   const columns = [
     {
@@ -60,10 +130,12 @@ const ProjectManagement = () => {
       key: "members",
 
       render: (text, record, index) => {
+        // console.log(record);
         return (
           <Avatar.Group
             key={index}
-            maxCount={2}
+            className="text-center"
+            maxCount={3}
             maxStyle={{
               color: "#f56a00",
               backgroundColor: "#fde3cf",
@@ -76,6 +148,23 @@ const ProjectManagement = () => {
                 </Tooltip>
               );
             })}
+
+            <Popover
+              placement="bottom"
+              title={"Add members"}
+              content={() => {
+                return content(record.id);
+              }}
+              trigger="click"
+            >
+              <button>
+                <Avatar
+                  style={{ backgroundColor: "#D7D7D7" }}
+                  className="opacity-100"
+                  icon={<i className="fa-solid fa-plus "></i>}
+                />
+              </button>
+            </Popover>
           </Avatar.Group>
         );
       },

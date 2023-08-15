@@ -1,43 +1,47 @@
-import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
-import React from "react";
-import { Avatar, Tooltip } from "antd";
+import React, { useState } from "react";
+import { AutoComplete } from "antd";
+const mockVal = (str, repeat = 1) => ({
+  value: str.repeat(repeat),
+});
 
 const Test = () => {
+  const [value, setValue] = useState("");
+  const [options, setOptions] = useState([]);
+  const [anotherOptions, setAnotherOptions] = useState([]);
+  const getPanelValue = (searchText) =>
+    !searchText
+      ? []
+      : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
+  const onSelect = (data) => {
+    console.log("onSelect", data);
+  };
+  const onChange = (data) => {
+    setValue(data);
+  };
   return (
     <>
-      <Avatar.Group
-        maxCount={2}
-        maxStyle={{
-          color: "#f56a00",
-          backgroundColor: "#fde3cf",
+      <AutoComplete
+        options={options}
+        style={{
+          width: 200,
         }}
-      >
-        <Tooltip placement="top" title={"ntn"}>
-          <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=2" />
-        </Tooltip>
-
-        <Avatar
-          style={{
-            backgroundColor: "#f56a00",
-          }}
-        >
-          K
-        </Avatar>
-        <Tooltip title="Ant User" placement="top">
-          <Avatar
-            style={{
-              backgroundColor: "#87d068",
-            }}
-            icon={<UserOutlined />}
-          />
-        </Tooltip>
-        <Avatar
-          style={{
-            backgroundColor: "#1677ff",
-          }}
-          icon={<AntDesignOutlined />}
-        />
-      </Avatar.Group>
+        onSelect={onSelect}
+        onSearch={(text) => setOptions(getPanelValue(text))}
+        placeholder="input here"
+      />
+      <br />
+      <br />
+      <AutoComplete
+        value={value}
+        options={anotherOptions}
+        style={{
+          width: 200,
+        }}
+        onSelect={onSelect}
+        onSearch={(text) => setAnotherOptions(getPanelValue(text))}
+        onChange={onChange}
+        placeholder="control mode"
+      />
     </>
   );
 };
