@@ -72,8 +72,8 @@ const FormSignIn = () => {
   return (
     <div>
       <p className="text-center text-5xl font-bold text-blue-600/25 mt-10">
-        <span>JARA </span> <i className="fa-brands fa-wordpress"></i>
-        <p className="text-xl">
+        <span>JIRA </span> <i className="fa-brands fa-wordpress"></i>
+        <p className="text-xl font-light">
           By: Lê Trung Nguyên - Nguyễn Minh Tân - Đỗ Văn Rin
         </p>
       </p>

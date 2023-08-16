@@ -27,6 +27,7 @@ export const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {},
+  title: "",
   // fulfilled: Thành công
   // pending: Dang chạy
   // rejected: error
