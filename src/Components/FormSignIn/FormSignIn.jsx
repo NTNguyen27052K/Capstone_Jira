@@ -1,5 +1,5 @@
 import React from "react";
-import { useFormik } from "formik";
+import { withFormik, useFormik } from "formik";
 import * as Yup from "yup";
 import Lottie from "react-lottie";
 import * as animation_sigin from "../../Assets/Animation/animation_llah7n7v.json";
@@ -9,22 +9,7 @@ import { userSer } from "../../Services/userServices";
 import { setLocal } from "../../Utils/localStore";
 import { useDispatch } from "react-redux";
 import { setDataName } from "../../Redux/slices/userSlice";
-
-// ...
-
-// const contentStyle = {
-//   textAlign: "center",
-//   color: "#111",
-//   backgroundColor: "#fff",
-//   padding: "60px",
-// };
-// const siderStyle = {
-//   color: "#fff",
-//   backgroundColor: "#3ba0e9",
-//   height: window.innerHeight,
-//   width: window.innerWidth / 2,
-// };
-
+import "./signin.scss";
 const FormSignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,14 +56,14 @@ const FormSignIn = () => {
   };
   return (
     <div>
-      <p className="text-center text-5xl font-bold text-blue-600/25 mt-10">
+      <p className="text-center text-5xl font-bold text-blue-600/25 my-8">
         <span>JIRA </span> <i className="fa-brands fa-wordpress"></i>
         <p className="text-xl font-light">
           By: Lê Trung Nguyên - Nguyễn Minh Tân - Đỗ Văn Rin
         </p>
       </p>
-      <div className="flex max-w-screen-xl mx-auto items-center min-h-screen">
-        <div className="w-7/12">
+      <div className="flex max-w-screen-xl mx-auto items-center signIn">
+        <div className="w-7/12 text-center img">
           <Lottie
             options={defaultOptions}
             //   style={{ height: "50vh", width: "100%" }}
@@ -86,14 +71,24 @@ const FormSignIn = () => {
             width={400}
             height={400}
           />
+          <p className="mb-3 text-center">
+            Đăng ký tài khoản để tham gia vào dự án. Nếu đã có tài khoản thì
+            đăng nhập vào để tham gia.
+            <br />
+            <NavLink to={"/signup"} className="text-blue-500 ">
+              <button className="text-white bg-gradient-to-r from-green-400 to-blue-500 hover:bg-blue-800 font-medium rounded-lg text-sm  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-3">
+                Đăng ký
+              </button>
+            </NavLink>
+          </p>
         </div>
 
-        <div className="w-5/12 px-10 flex justify-start text-center">
+        <div className="w-5/12 px-10 flex justify-start text-center formSignin">
           <form onSubmit={handleSubmit} className="mt-5">
-            <h1 className="text-center text-5xl font-bold mb-6">Login</h1>
+            <h1 className="text-center text-3xl font-bold mb-6 ">ĐĂNG NHẬP</h1>
 
             {/* Email */}
-            <div className="mb-3 ">
+            <div className="mb-10 ">
               <label className="block mb-2 text-sm font-medium text-gray-900">
                 Email
               </label>
@@ -136,15 +131,8 @@ const FormSignIn = () => {
               type="submit"
               className="text-white bg-gradient-to-r from-green-400 to-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-3"
             >
-              Login
+              Đăng nhập
             </button>
-            <p className="mb-3">
-              Already have an account?
-              <br />
-              <NavLink to={"/signup"} className="text-blue-500 ">
-                Sign Up
-              </NavLink>
-            </p>
           </form>
         </div>
       </div>
@@ -152,5 +140,28 @@ const FormSignIn = () => {
     </div>
   );
 };
+// const mapFormiktoprops = withFormik({
+//   mapPropsToValues: () => ({ name: "" }),
+
+//   // Custom sync validation
+//   validate: (values) => {
+//     const errors = {};
+
+//     if (!values.name) {
+//       errors.name = "Required";
+//     }
+
+//     return errors;
+//   },
+
+//   handleSubmit: (values, { setSubmitting }) => {
+//     setTimeout(() => {
+//       alert(JSON.stringify(values, null, 2));
+//       setSubmitting(false);
+//     }, 1000);
+//   },
+
+//   displayName: "BasicForm",
+// })(FormSignIn);
 
 export default FormSignIn;

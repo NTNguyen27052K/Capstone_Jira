@@ -1,0 +1,22 @@
+.img {
+  width: 100%;
+  color: aqua;
+}
+@media screen and (max-width: 680px) {
+  .signIn {
+    flex-direction: column;
+    padding: none;
+    .img {
+      width: 100%;
+      order: 1;
+      p {
+        order: 0;
+      }
+    }
+    .formSignin {
+      h1 {
+        font-size: larger;
+      }
+    }
+  }
+}
