@@ -71,12 +71,12 @@ const FormSignIn = () => {
   };
   return (
     <div>
-      <p className="text-center text-5xl font-bold text-blue-600/25 mt-10">
+      {/* <p className="text-center text-5xl font-bold text-blue-600/25 mt-10">
         <span>JIRA </span>
         <p className="text-xl">
           By: Lê Trung Nguyên - Nguyễn Minh Tân - Đỗ Văn Rin
         </p>
-      </p>
+      </p> */}
       <div className="flex max-w-screen-xl mx-auto items-center min-h-screen">
         <div className="w-7/12">
           <Lottie

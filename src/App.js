@@ -6,6 +6,7 @@ import Test from "./Template/Test";
 import FormSignIn from "./Components/FormSignIn/FormSignIn";
 import ProjectManagement from "./Components/ProjectManagement/ProjectManagement";
 import UpdateProject from "./Components/UpdateProject/UpdateProject";
+import DetailBoard from "./Components/DetailBoard/DetailBoard";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             path="projectManagement/edit/:id"
             element={<UpdateProject />}
           />
+          <Route path="projectManagement/board/:id" element={<DetailBoard />} />
         </Route>
       </Routes>
     </BrowserRouter>

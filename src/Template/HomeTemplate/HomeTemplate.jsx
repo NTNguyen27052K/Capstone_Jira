@@ -4,12 +4,14 @@ import { Layout, Menu, Item, theme, Breadcrumb } from "antd";
 import logoCyber from "./../../Assets/Imgage/iconCyber.png";
 import { NavLink, Outlet } from "react-router-dom";
 import "./homeTemplate.scss";
+import { useSelector } from "react-redux";
 
 const { Header, Sider, Content } = Layout;
 
 const HomeTemplate = () => {
   const [collapsed, setCollapsed] = useState(true);
   const [breadcrumb, setBreadcrumb] = useState("Create Project");
+  const { name } = useSelector((state) => state.users);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -106,7 +108,7 @@ const HomeTemplate = () => {
             onMouseOut={() => {
               setCollapsed(true);
             }}
-            className="px-2 min-h-screen"
+            className="px-2 min-h-screen hover:transition-all hover:duration-300"
           >
             <div className="demo-logo-vertical" />
             <div className="h-[64px] flex justify-center items-center mb-[24px]">
@@ -143,18 +145,36 @@ const HomeTemplate = () => {
             paddingLeft: 20,
             background: colorBgContainer,
           }}
+          className="flex items-center  justify-between"
         >
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            {/* <Breadcrumb.Item>Home</Breadcrumb.Item> */}
-            {/* <Breadcrumb.Item>List</Breadcrumb.Item> */}
-            {/* <Breadcrumb.Item>{breadcrumb}</Breadcrumb.Item> */}
-          </Breadcrumb>
+          <Breadcrumb
+            style={{ margin: "18px 0" }}
+            items={[
+              {
+                title: "Home",
+              },
+              {
+                title: breadcrumb,
+              },
+            ]}
+          />
+          <div className="infoUser flex items-center mr-[16px]">
+            <i className="fa-solid fa-gear"></i>
+            <img
+              className="ml-2 rounded-full w-8 h-8"
+              src={name.avatar}
+              alt=""
+            />
+          </div>
         </Header>
         <Content
           style={{
             margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
+            paddingTop: 24,
+            paddingLeft: 24,
+            paddingRight: 24,
+            paddingButton: 0,
+
             background: colorBgContainer,
           }}
         >

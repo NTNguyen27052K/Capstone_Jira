@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProject } from "../../Redux/slices/projectSliece";
-import { Space, Table, Tag, AutoComplete } from "antd";
-import ColumnGroup from "antd/es/table/ColumnGroup";
 import { projectServ } from "../../Services/projectServices";
-import { NavLink } from "react-router-dom";
-import "./projectManagement.scss";
 
-import { Avatar, Popover, Tooltip } from "antd";
+import "./projectManagement.scss";
+import {
+  Avatar,
+  Popover,
+  Tooltip,
+  Space,
+  Table,
+  Tag,
+  AutoComplete,
+  Button,
+} from "antd";
 import { userSer } from "../../Services/userServices";
 import { getListUser } from "../../Redux/slices/userSlice";
+import { NavLink } from "react-router-dom";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
@@ -21,39 +28,14 @@ const ProjectManagement = () => {
     dispatch(getAllProject());
   }, []);
 
-  const [value, setValue] = useState("");
   const [options, setOptions] = useState("");
-  const [anotherOptions, setAnotherOptions] = useState([]);
-  const getPanelValue = (searchText) => {
-    return;
+  const [open, setOpen] = useState(false);
+  const hide = () => {
+    setOpen(false);
   };
-  // console.log(options);
-
-  const onSelect = (value, option) => {
-    console.log(value);
-    console.log(option);
-    // userSer.assignUserProject()
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
   };
-  const onChange = (data) => {
-    setValue(data);
-  };
-  // const content = (
-  //   <AutoComplete
-  //     options={listUser.map((item, index) => {
-  //       return { label: item.name, value: item.userId };
-  //     })}
-  //     style={{
-  //       width: 200,
-  //     }}
-  //     onSelect={onSelect}
-  //     // onSearch={(text) => setOptions(getPanelValue(text))}
-
-  //     onSearch={(text) => {
-  //       dispatch(getListUser(text));
-  //     }}
-  //     placeholder="input here"
-  //   />
-  // );
   const content = (id) => {
     return (
       <AutoComplete
@@ -106,7 +88,11 @@ const ProjectManagement = () => {
       title: "Project name",
       dataIndex: "projectName",
       key: "projectName",
-      render: (text, index) => <p key={index}>{text}</p>,
+      render: (text, record, index) => (
+        <NavLink to={`board/${record.id}`}>
+          <p key={index}>{text}</p>
+        </NavLink>
+      ),
     },
     {
       title: "Category",
@@ -130,25 +116,32 @@ const ProjectManagement = () => {
       key: "members",
 
       render: (text, record, index) => {
-        // console.log(record);
         return (
-          <Avatar.Group
-            key={index}
-            className="text-center"
-            maxCount={3}
-            maxStyle={{
-              color: "#f56a00",
-              backgroundColor: "#fde3cf",
-            }}
-          >
-            {text.map((item, index) => {
-              return (
-                <Tooltip placement="top" key={index} title={item.name}>
-                  <Avatar src={item.avatar} />
-                </Tooltip>
-              );
-            })}
-
+          <div className="flex justify-center">
+            <Avatar.Group
+              key={index}
+              className="text-center"
+              maxCount={2}
+              maxStyle={{
+                color: "#f56a00",
+                backgroundColor: "#fde3cf",
+              }}
+            >
+              {text.map((item, index) => {
+                return (
+                  <Popover
+                    content={<button onClick={hide}>Close</button>}
+                    title="Title"
+                    trigger="click"
+                    open={open}
+                    onOpenChange={handleOpenChange}
+                    key={index}
+                  >
+                    <Avatar type="primary" src={item.avatar} />
+                  </Popover>
+                );
+              })}
+            </Avatar.Group>
             <Popover
               placement="bottom"
               title={"Add members"}
@@ -165,7 +158,7 @@ const ProjectManagement = () => {
                 />
               </button>
             </Popover>
-          </Avatar.Group>
+          </div>
         );
       },
     },
@@ -177,7 +170,7 @@ const ProjectManagement = () => {
           <div className="flex justify-between">
             <button
               type="button"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5   dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mr-1"
               onClick={() => {
                 projectServ
                   .deleteProject(record.id)
@@ -195,7 +188,7 @@ const ProjectManagement = () => {
             <NavLink to={`edit/${record.id}`}>
               <button
                 type="button"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ml-1"
                 // onClick={showModal}
                 onClick={() => {}}
               >
@@ -219,7 +212,7 @@ const ProjectManagement = () => {
       columns={columns}
       dataSource={userList}
       pagination={{
-        pageSize: 5,
+        pageSize: 6,
       }}
     />
   );

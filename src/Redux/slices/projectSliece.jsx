@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { projectServ } from "../../Services/projectServices";
-import { useState } from "react";
 
 export const getAllProject = createAsyncThunk(
   "project/listProject/getAllProject",
   async () => {
     const res = await projectServ.getAllProject();
-    return res.data.content;
+    return res.data?.content;
   }
 );
 
@@ -15,12 +14,21 @@ export const getProjectDetail = createAsyncThunk(
   async (data) => {
     const res = await projectServ.getProjectDetail(data);
     console.log(res);
-    return res.data.content;
+    return res.data?.content;
+  }
+);
+export const getTask = createAsyncThunk(
+  "project/task/getTask",
+  async (data) => {
+    const res = await projectServ.getTaskDetail(data);
+    // console.log(res);
+    return res.data?.content;
   }
 );
 const initialState = {
   listProject: [],
   projectDetail: [],
+  task: [],
 };
 
 export const projectSlice = createSlice({
@@ -43,6 +51,12 @@ export const projectSlice = createSlice({
       state.projectDetail = action.payload;
     });
     buider.addCase(getProjectDetail.rejected, (error) => {
+      console.log(error);
+    });
+    buider.addCase(getTask.fulfilled, (state, action) => {
+      state.task = action.payload;
+    });
+    buider.addCase(getTask.rejected, (error) => {
       console.log(error);
     });
   },

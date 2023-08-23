@@ -8,3 +8,41 @@
   .ant-pagination-options {
   display: none;
 }
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:nth-child(5),
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:nth-child(6),
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:nth-child(4) {
+  text-align: center;
+}
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td:nth-child(6) {
+  text-align: center;
+}
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td:nth-child(4) {
+  text-align: center;
+}
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-pagination.ant-pagination {
+  margin-top: 25px;
+}
