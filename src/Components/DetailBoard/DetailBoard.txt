@@ -5,12 +5,8 @@ import { useParams } from "react-router-dom";
 
 import { Avatar, Tag, Popover, Tooltip, Modal } from "antd";
 import Task from "../Task/Task";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getProjectDetail,
-  getTask,
-  setProjectDetail,
-} from "../../Redux/slices/projectSliece";
+import { useDispatch } from "react-redux";
+import { getTask } from "../../Redux/slices/projectSliece";
 import ColumnGroup from "antd/es/table/ColumnGroup";
 import { getAllStatus } from "../../Redux/slices/statusSliece";
 import { getAllPriority } from "../../Redux/slices/prioritySliece";
@@ -19,33 +15,19 @@ const DetailBoard = () => {
   const [projetMembers, setProjetMember] = useState([]);
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { projectDetail } = useSelector((state) => state.project);
-
-  console.log("a");
   useEffect(() => {
     dispatch(getAllStatus());
     dispatch(getAllPriority(0));
-    dispatch(getProjectDetail(id));
-    // async function dispatchData() {
-    //   const res = await dispatch(getProjectDetail(id));
-    //   console.log("ssss");
-    //   return res;
-    // }
-    // dispatchData();
-    console.log("useEffect");
-    // projectServ
-    //   .getProjectDetail(id)
-    //   .then((result) => {
-    //     console.log(result.data.content);
-    //     setProjetMember(result.data.content);
-    //     // dispatch(setProjectDetail(result.data.content));
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    projectServ
+      .getProjectDetail(id)
+      .then((result) => {
+        console.log(result.data.content);
+        setProjetMember(result.data.content);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
-  // console.log(projectDetail);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -56,7 +38,7 @@ const DetailBoard = () => {
   };
   return (
     <div>
-      {console.log(projectDetail)}
+      {/* {console.log(projetMembers)} */}
       <h1 className="text-2xl font-bold mb-[34px]">Detail Board</h1>
       <div className="flex">
         <form className="mr-5">
@@ -96,7 +78,7 @@ const DetailBoard = () => {
           size="large"
           maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
         >
-          {projectDetail.members?.map((item, index) => {
+          {projetMembers.members?.map((item, index) => {
             return (
               <Tooltip placement="top" key={index} title={item.name}>
                 <Avatar
@@ -109,7 +91,6 @@ const DetailBoard = () => {
           })}
         </Avatar.Group>
       </div>
-
       <Modal
         open={isModalOpen}
         footer={null}
@@ -118,9 +99,8 @@ const DetailBoard = () => {
       >
         <Task />
       </Modal>
-
       <div className="dragDrop grid grid-cols-4 gap-4 mt-10">
-        {projectDetail.lstTask?.map((item, index) => {
+        {projetMembers.lstTask?.map((item, index) => {
           return (
             <div key={index} className="card bg-gray-200 h-auto rounded-md">
               <Tag
@@ -137,6 +117,7 @@ const DetailBoard = () => {
               >
                 {item.statusName}
               </Tag>
+              {/* <div className="card__header ml-5 mt-5">{item.statusName}</div> */}
               <ul className="card__listTask">
                 {item.lstTaskDeTail?.map((item, index) => {
                   return (
@@ -154,6 +135,7 @@ const DetailBoard = () => {
                           });
                       }}
                     >
+                      {/* {console.log(item)} */}
                       <p className="comment">{item.taskName}</p>
                       <div className="flex justify-between items-center">
                         <div className="priority">

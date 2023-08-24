@@ -13,7 +13,7 @@ export const getProjectDetail = createAsyncThunk(
   "project/projectDetail/getProjectDetail",
   async (data) => {
     const res = await projectServ.getProjectDetail(data);
-    console.log(res);
+
     return res.data?.content;
   }
 );
@@ -34,7 +34,12 @@ const initialState = {
 export const projectSlice = createSlice({
   name: "project",
   initialState,
-  reducers: {},
+  reducers: {
+    // setProjectDetail: (state, action) => {
+    //   console.log(action);
+    //   state.project.projectDetail = action.payload;
+    // },
+  },
   // fulfilled: Thành công
   // pending: Dang chạy
   // rejected: error
@@ -46,8 +51,11 @@ export const projectSlice = createSlice({
     buider.addCase(getAllProject.rejected, (error) => {
       console.log(error);
     });
+    // buider.addCase(getProjectDetail.pending, (state, action) => {
+    //   // console.log(action);
+    //   state.projectDetail = action.payload;
+    // });
     buider.addCase(getProjectDetail.fulfilled, (state, action) => {
-      // console.log(action);
       state.projectDetail = action.payload;
     });
     buider.addCase(getProjectDetail.rejected, (error) => {
@@ -61,5 +69,8 @@ export const projectSlice = createSlice({
     });
   },
 });
-
+// export const { setDataName } = userSlice.actions;
 export default projectSlice.reducer;
+// export const { setProjectDetail } = projectSlice.actions;
+
+// export default projectSlice.reducer;

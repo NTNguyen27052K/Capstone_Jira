@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProject } from "../../Redux/slices/projectSliece";
+import {
+  getAllProject,
+  getProjectDetail,
+} from "../../Redux/slices/projectSliece";
 import { projectServ } from "../../Services/projectServices";
 
 import "./projectManagement.scss";
@@ -23,7 +26,7 @@ const ProjectManagement = () => {
 
   const { listProject } = useSelector((state) => state.project);
   const { listUser } = useSelector((state) => state.users);
-  console.log(listUser);
+  // console.log(listUser);
   useEffect(() => {
     dispatch(getAllProject());
   }, []);
@@ -89,7 +92,13 @@ const ProjectManagement = () => {
       dataIndex: "projectName",
       key: "projectName",
       render: (text, record, index) => (
-        <NavLink to={`board/${record.id}`}>
+        <NavLink
+          to={`board/${record.id}`}
+          // onClick={() => {
+          //   // console.log(record);
+          //   dispatch(getProjectDetail(record.id));
+          // }}
+        >
           <p key={index}>{text}</p>
         </NavLink>
       ),

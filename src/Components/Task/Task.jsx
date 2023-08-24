@@ -2,18 +2,25 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactHtmlParser from "react-html-parser";
 import { Progress, Tag } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import "./task.scss";
+import { statusSer } from "../../Services/statusServices";
+import { getProjectDetail, getTask } from "../../Redux/slices/projectSliece";
+
 const Task = () => {
   const { task } = useSelector((state) => state.project);
-
+  const dispatch = useDispatch();
   const { status } = useSelector((state) => state.status);
   const { priority } = useSelector((state) => state.priority);
 
   useEffect(() => {
-    console.log(status);
-    console.log(task);
+    // console.log(status);
+    // console.log(task);
   }, [task?.taskId]);
-
+  const { timeTrackingRemaining, timeTrackingSpent } = task;
+  let timeTracking = Number(timeTrackingRemaining) + Number(timeTrackingSpent);
+  let percentTimeTracking = Math.round(
+    (timeTrackingSpent / timeTracking) * 100
+  );
   return (
     <div className="task grid grid-cols-2 gap-2 ">
       <div className="task__left">
@@ -35,7 +42,24 @@ const Task = () => {
         <select
           className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  block  p-2.5  dark:border-blue-500  dark:focus:ring-blue-500 dark:focus:border-blue-500 my-3 w-[100%]"
           value={task?.statusId}
-          onChange={(e) => {}}
+          onChange={(event) => {
+            console.log({
+              taskId: task?.taskId,
+              statusId: event.target.value,
+            });
+            statusSer
+              .updateStatus({
+                taskId: task?.taskId,
+                statusId: event.target.value,
+              })
+              .then((result) => {
+                dispatch(getProjectDetail(task?.projectId));
+                console.log(result);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }}
         >
           {status.map((item, index) => {
             return (
@@ -99,11 +123,41 @@ const Task = () => {
           value={task?.originalEstimate}
           onChange={(e) => {}}
         />
-        <h1>TIME TRACKING</h1>
-        <div className="timeTracking flex justify-between items-center">
-          <i className="fa-solid fa-stopwatch mr-2 my-2"></i>
-          <Progress percent={task} />
+        <h1 className="mb-3">TIME TRACKING</h1>
+        <div className="timeTracking flex gap-3">
+          <div className="w-1/12 flex justify-center items-center ">
+            <i className="fa-solid fa-stopwatch fa-2xl "></i>
+          </div>
+          <div className="w-11/12">
+            <Progress
+              className="w-full m-0 "
+              format={(percent) => ``}
+              percent={percentTimeTracking}
+            />
+            <div className=" flex justify-between">
+              <span>{timeTrackingSpent}h logged</span>
+              <span>{timeTrackingRemaining}h remaining</span>
+            </div>
+          </div>
         </div>
+
+        {/* <div className="timeTracking flex justify-between items-center">
+          <i className="fa-solid fa-stopwatch fa-xl flex justify-center items-center m-0 w-1/12"></i>
+          <div className="w-11/12 ">
+            <Progress
+              className="w-full m-0 "
+              format={(percent) => ``}
+              percent={percentTimeTracking}
+            />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="w-1/12"></div>
+          <div className="w-11/12 flex  justify-between">
+            <span>{timeTrackingSpent}h logged</span>
+            <span>{timeTrackingRemaining}h remaining</span>
+          </div>
+        </div> */}
       </div>
     </div>
   );
