@@ -13,4 +13,10 @@ export const userSer = {
   deteleUser: (data) => {
     return https.put("/api/Users/deleteUser", data);
   },
+  getUser: (data) => {
+    return https.get(`/api/Users/getUser?keyword=${data}`);
+  },
+  assignUserProject: (data) => {
+    return https.post("/api/Project/assignUserProject", data);
+  },
 };

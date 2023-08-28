@@ -1,0 +1,15 @@
+:where(
+    .css-dev-only-do-not-override-fpg3f5
+  ).ant-menu-light.ant-menu-root.ant-menu-inline {
+  border-inline-end: none !important;
+}
+// #siderMain {
+//   min-width: 250px;
+// }
+// :where(.css-dev-only-do-not-override-fpg3f5).ant-layout .ant-layout-sider-ligh {
+//   min-width: 250px !important;
+// }
+:where(.css-dev-only-do-not-override-fpg3f5).ant-layout
+  .ant-layout-sider-light {
+  min-width: 250px !important;
+}
