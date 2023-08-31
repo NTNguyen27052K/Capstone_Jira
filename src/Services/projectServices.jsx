@@ -20,7 +20,10 @@ export const projectServ = {
   updateProject: (id, data) => {
     return https.put(`/api/Project/updateProject?projectId=${id}`, data);
   },
-  getTaskDetail: (data) => {
-    return https.get(`/api/Project/getTaskDetail?taskId=${data}`);
-  },
+  // getTaskDetail: (data) => {
+  //   return https.get(`/api/Project/getTaskDetail?taskId=${data}`);
+  // },
+  // updateTask: (data) => {
+  //   return https.post("/api/Project/updateTask", data);
+  // },
 };

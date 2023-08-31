@@ -4,6 +4,7 @@ import projectCategorySlice from "./slices/projectCategorySlice";
 import projectSlice from "./slices/projectSliece";
 import statusSlice from "./slices/statusSliece";
 import prioritySlice from "./slices/prioritySliece";
+import taskSlice from "./slices/taskSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     project: projectSlice,
     status: statusSlice,
     priority: prioritySlice,
+    task: taskSlice,
   },
 });

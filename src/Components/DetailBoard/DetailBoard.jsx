@@ -14,6 +14,7 @@ import {
 import ColumnGroup from "antd/es/table/ColumnGroup";
 import { getAllStatus } from "../../Redux/slices/statusSliece";
 import { getAllPriority } from "../../Redux/slices/prioritySliece";
+import { getTaskType } from "../../Redux/slices/taskSlice";
 
 const DetailBoard = () => {
   const [projetMembers, setProjetMember] = useState([]);
@@ -21,7 +22,6 @@ const DetailBoard = () => {
   const dispatch = useDispatch();
   const { projectDetail } = useSelector((state) => state.project);
 
-  console.log("a");
   useEffect(() => {
     dispatch(getAllStatus());
     dispatch(getAllPriority(0));
@@ -32,7 +32,7 @@ const DetailBoard = () => {
     //   return res;
     // }
     // dispatchData();
-    console.log("useEffect");
+    // console.log("useEffect");
     // projectServ
     //   .getProjectDetail(id)
     //   .then((result) => {
@@ -43,7 +43,7 @@ const DetailBoard = () => {
     //   .catch((error) => {
     //     console.log(error);
     //   });
-  }, []);
+  }, [id]);
   // console.log(projectDetail);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,7 +56,7 @@ const DetailBoard = () => {
   };
   return (
     <div>
-      {console.log(projectDetail)}
+      {/* {console.log(projectDetail)} */}
       <h1 className="text-2xl font-bold mb-[34px]">Detail Board</h1>
       <div className="flex">
         <form className="mr-5">
@@ -145,6 +145,7 @@ const DetailBoard = () => {
                       className="task hover:bg-[#ebecf0] m-5 transition-all duration-700  bg-white rounded-md p-3 shadow-md"
                       onClick={() => {
                         // showModal();
+                        dispatch(getTaskType());
                         dispatch(getTask(item.taskId))
                           .then((result) => {
                             showModal();

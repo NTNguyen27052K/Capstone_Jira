@@ -6,3 +6,26 @@
   .ant-progress-outer {
   height: 0 !important;
 }
+:where(.css-dev-only-do-not-override-fpg3f5).ant-btn-primary:not(:disabled):not(
+    .ant-btn-disabled
+  ) {
+  color: #fff;
+  background-color: #4096ff;
+}
+:where(.css-dev-only-do-not-override-fpg3f5).ant-modal .ant-modal-content {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // top: 0;
+  // bottom: 0;
+}
+// #editorTimeTracking__left--input {
+//   &:focus-visible {
+//     outline: transparent;
+//   }
+// }
+.focusVisibleOutline {
+  &:focus-visible {
+    outline: transparent;
+  }
+}

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { projectServ } from "../../Services/projectServices";
+import { taskServ } from "../../Services/taskServices";
 
 export const getAllProject = createAsyncThunk(
   "project/listProject/getAllProject",
@@ -20,7 +21,7 @@ export const getProjectDetail = createAsyncThunk(
 export const getTask = createAsyncThunk(
   "project/task/getTask",
   async (data) => {
-    const res = await projectServ.getTaskDetail(data);
+    const res = await taskServ.getTaskDetail(data);
     // console.log(res);
     return res.data?.content;
   }
