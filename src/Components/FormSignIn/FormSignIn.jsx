@@ -10,21 +10,6 @@ import { setLocal } from "../../Utils/localStore";
 import { useDispatch } from "react-redux";
 import { setDataName } from "../../Redux/slices/userSlice";
 
-// ...
-
-// const contentStyle = {
-//   textAlign: "center",
-//   color: "#111",
-//   backgroundColor: "#fff",
-//   padding: "60px",
-// };
-// const siderStyle = {
-//   color: "#fff",
-//   backgroundColor: "#3ba0e9",
-//   height: window.innerHeight,
-//   width: window.innerWidth / 2,
-// };
-
 const FormSignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

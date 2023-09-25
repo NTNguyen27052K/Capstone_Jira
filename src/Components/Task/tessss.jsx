@@ -1,27 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactHtmlParser from "react-html-parser";
-import { Progress, Tag, Modal, Select, Button, Space } from "antd";
+import { Progress, Tag, Modal, Select, Button } from "antd";
 import "./task.scss";
 import { TweenOneGroup } from "rc-tween-one";
 import { getProjectDetail, getTask } from "../../Redux/slices/projectSliece";
-import { CloseCircleOutlined } from "@ant-design/icons";
+
 import { Editor } from "@tinymce/tinymce-react";
 import { taskServ } from "../../Services/taskServices";
-import ColumnGroup from "antd/es/table/ColumnGroup";
 
 const Task = (props) => {
   const { task, projectDetail } = useSelector((state) => state.project);
+  // console.log(task);
+
+  const [taskUseState, setTaskUseState] = useState(task);
+
+  const dispatch = useDispatch();
+
   const { status } = useSelector((state) => state.status);
   const { priority } = useSelector((state) => state.priority);
   const { taskType } = useSelector((state) => state.task);
 
-  const [taskUseState, setTaskUseState] = useState(task);
-  // console.log(taskUseState);
-  const dispatch = useDispatch();
-  // console.log(task.assigness);
   // console.log(taskType);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -31,88 +33,91 @@ const Task = (props) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  //! timeTracking
+
   const { timeTrackingRemaining, timeTrackingSpent } = task;
   let timeTracking = Number(timeTrackingRemaining) + Number(timeTrackingSpent);
   let percentTimeTracking = Math.round(
     (timeTrackingSpent / timeTracking) * 100
   );
-  //! description
-  const editorRef = useRef(null);
-  const [discContent, setDiscContent] = useState(task?.description);
-  const [visibleEditer, setVisibleEditer] = useState(false);
-  const [addDiscAction, setAddDiscAction] = useState(true);
 
-  console.log(discContent);
   const handleChange = (event) => {
-    const { name, value } = event?.target;
-
+    const { name, value } = event.target;
     console.log({ name, value });
-    console.log({
-      ...task,
-      [name]: value,
-      // priorityTask: name,
-      description: discContent,
-    });
-
-    setTaskUseState({
-      ...task,
-      [name]: value,
-
-      // priorityTask: name,
-      description: discContent,
-    });
+    setTaskUseState({ ...task, [name]: value, priorityTask: name });
 
     taskServ
-      .updateTask({
-        ...task,
-        [name]: value,
-        description: discContent,
-      })
+      .updateTask({ ...task, [name]: value })
       .then((result) => {
-        dispatch(getTask(task?.taskId));
-        dispatch(getProjectDetail(task?.projectId));
+        dispatch(getTask(task.taskId));
+        dispatch(getProjectDetail(task.projectId));
         // console.log(result);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  const editorRef = useRef(null);
 
+  const [visibleEditer, setVisibleEditer] = useState(props.visEditer);
+
+  // console.log("props", props.visEditer);
+  // console.log("visibleEditer", visibleEditer);
+  // const forMap = (tag) => {
+  //   const tagElem = (
+  //     <Tag
+  //       closable
+  //       // onClose={(e) => {
+  //       //   e.preventDefault();
+  //       //   handleClose(tag);
+  //       // }}
+  //     >
+  //       {tag}
+  //     </Tag>
+  //   );
+  //   return (
+  //     <span
+  //       key={tag}
+  //       style={{
+  //         display: "inline-block",
+  //       }}
+  //     >
+  //       {tagElem}
+  //     </span>
+  //   );
+  // };
+  // const tagChild = taskUseState?.assigness.map(forMap);
+
+  // const OPTIONS = taskUseState?.assigness;
   //! Select ASSIGNEES
-  // const [assignessed, setAssignessed] = useState([]);
-  // console.log(assignessed);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const OPTIONS = projectDetail?.members.map((item, index) => {
+    return item.name;
+  });
 
+  const selectedIt = task?.assigness.map((item, index) => {
+    return item.name;
+  });
   useEffect(() => {
     // selectedIt();
-    // setDiscContent();
-    const selectedIt = task?.assigness.map((item, index) => {
-      // console.log(item.name);
-      return item?.name;
-    });
 
     setSelectedItems(selectedIt);
-  }, [task?.assigness, task?.description]);
+  }, [task?.assigness]);
 
-  const OPTIONS = projectDetail?.members.map((item, index) => {
-    return item?.name;
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  // const filteredOptions = OPTIONS.filter((o) => !selectedItems?.includes(o));
+  const filteredOptions = OPTIONS.filter((o) => {
+    console.log(o);
+    return !selectedItems?.includes(o);
   });
-  // console.log(selectedItems);
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems?.includes(o));
-  const preventDefault = (e) => {
-    e.preventDefault();
-    console.log("Clicked! But prevent default.");
-  };
-  // console.log(task.taskTypeDetail.id);
+
   return (
     <div className="task grid grid-cols-2 gap-4">
       <div className="task__left">
         <div className="task__title">
           <select
             className="focusVisibleOutline border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  block  p-2.5  dark:border-blue-500  dark:focus:ring-blue-500 dark:focus:border-blue-500 my-3 "
-            name="typeId"
-            value={task.taskTypeDetail?.id}
+            name="taskType"
+            value={taskUseState.taskTypeDetail?.id}
             onChange={(event) => {
               handleChange(event);
             }}
@@ -129,30 +134,13 @@ const Task = (props) => {
         <div>{task?.alias}</div>
 
         <h1 className="font-bold text-lg mb-3">Description</h1>
-        {task?.description === "" && addDiscAction === true ? (
-          <div
-            className="hover:bg-gray-200 rounded p-1 cursor-pointer"
-            onClick={() => {
-              console.log("visibleEditer");
-              setVisibleEditer(true);
-              setAddDiscAction(false);
-            }}
-          >
-            Add Description...
-          </div>
-        ) : (
-          <></>
-        )}
-        {/* <div>{ReactHtmlParser(task?.description)}</div> */}
-
-        {/* <div>{ReactHtmlParser(task?.description)}</div> */}
         {visibleEditer ? (
           <div>
             <Editor
               className="h-10"
               name="description"
               onInit={(evt, editor) => (editorRef.current = editor)}
-              initialValue={discContent}
+              initialValue={task?.description}
               init={{
                 height: 300,
                 menubar: false,
@@ -175,10 +163,8 @@ const Task = (props) => {
                 type="primary"
                 className="mr-3"
                 onClick={(event) => {
+                  // console.log(editorRef.current.getContent());
                   handleChange(event);
-                  setVisibleEditer(false);
-                  console.log(editorRef.current.getContent());
-                  setDiscContent(editorRef.current?.getContent());
                 }}
               >
                 Save
@@ -199,7 +185,7 @@ const Task = (props) => {
           name="statusId"
           value={taskUseState?.statusId}
           onChange={(event) => {
-            // console.log(event.target);
+            // console.log(event.target.name);
             handleChange(event);
           }}
         >
@@ -214,40 +200,39 @@ const Task = (props) => {
 
         <h1 className="mb-3">ASSIGNEES</h1>
 
-        <div className="assignees">
-          <Space size={[0, 8]} wrap>
-            {task.assigness?.map((item, index) => {
-              return (
-                <Tag closeIcon onClose={preventDefault} key={index}>
-                  {item?.name}
-                </Tag>
-              );
-            })}
-
-            <select
-              className="focusVisibleOutline border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  block  p-2.5  dark:border-blue-500  dark:focus:ring-blue-500 dark:focus:border-blue-500 my-3 "
-              name="listUserAsign"
-              value={task.assigness}
-              onChange={(event) => {
-                handleChange(event);
-              }}
-            >
-              <option defaultValue>Add more</option>
-              {filteredOptions.map((item, index) => {
-                return (
-                  <option key={index} value={item?.id}>
-                    {item}
-                  </option>
-                );
-              })}
-            </select>
-          </Space>
+        <div className="assignees grid grid-cols-3 gap-2">
+          <Select
+            name="selectedItems"
+            mode="multiple"
+            value={selectedItems}
+            defaultValue={["gold", "cyan"]}
+            onChange={(event) => {
+              // handleChange(event);
+              // handleChange(value);
+              console.log(event.target.name);
+              // console.log(value);
+              setSelectedItems(event);
+            }}
+            style={{
+              width: "100%",
+            }}
+            options={filteredOptions.map((item) => ({
+              value: item,
+              label: item,
+            }))}
+          />
+          <span className="addAssigness flex justify-start items-center text-blue-500">
+            <i className="fa-solid fa-plus mr-2"></i>
+            <p className="hover:underline hover:underline-offset-4 transition duration-700 ease-in-out ">
+              Add more
+            </p>
+          </span>
         </div>
         <h1 className="mt-3">PRIORITY</h1>
         <select
           className=" focusVisibleOutline border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  block  p-2.5  dark:border-blue-500  dark:focus:ring-blue-500 dark:focus:border-blue-500 my-3 w-[100%]"
           name="priorityId"
-          value={task.priorityTask?.priorityId}
+          value={taskUseState.priorityTask?.priorityId}
           onChange={(event) => {
             handleChange(event);
           }}

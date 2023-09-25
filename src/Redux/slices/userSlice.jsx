@@ -10,7 +10,13 @@ export const getListUser = createAsyncThunk(
     return res.data.content;
   }
 );
-
+export const getListUserAssigners = createAsyncThunk(
+  "users/listUserAssigners/getListUserAssigners",
+  async (data) => {
+    const res = await userSer.getUserByProjectId(data);
+    return res.data.content;
+  }
+);
 const initialState = {
   name: getDataLocal("userLocal"),
   listUser: [],
@@ -32,6 +38,13 @@ export const userSlice = createSlice({
       state.listUser = action.payload;
     });
     buider.addCase(getListUser.rejected, (error) => {
+      console.log(error);
+    });
+    buider.addCase(getListUserAssigners.fulfilled, (state, action) => {
+      // console.log(action);
+      state.listUserAssigners = action.payload;
+    });
+    buider.addCase(getListUserAssigners.rejected, (error) => {
       console.log(error);
     });
   },

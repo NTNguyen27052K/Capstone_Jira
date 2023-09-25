@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { statusSer } from "../../Services/statusServices";
 import { prioritySer } from "../../Services/priorityServices";
 
 export const getAllPriority = createAsyncThunk(
-  "priority/getAllStatus",
+  "priority/getAllPriority",
   async (data) => {
     const res = await prioritySer.getStatus(data);
 

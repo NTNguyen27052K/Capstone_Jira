@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllProject,
-  getProjectDetail,
-} from "../../Redux/slices/projectSliece";
+import { getAllProject } from "../../Redux/slices/projectSliece";
 import { projectServ } from "../../Services/projectServices";
 
 import "./projectManagement.scss";
-import {
-  Avatar,
-  Popover,
-  Tooltip,
-  Space,
-  Table,
-  Tag,
-  AutoComplete,
-  Button,
-} from "antd";
+import { Avatar, Popover, Space, Table, Tag, AutoComplete } from "antd";
 import { userSer } from "../../Services/userServices";
 import { getListUser } from "../../Redux/slices/userSlice";
 import { NavLink } from "react-router-dom";
@@ -92,13 +80,7 @@ const ProjectManagement = () => {
       dataIndex: "projectName",
       key: "projectName",
       render: (text, record, index) => (
-        <NavLink
-          to={`board/${record.id}`}
-          // onClick={() => {
-          //   // console.log(record);
-          //   dispatch(getProjectDetail(record.id));
-          // }}
-        >
+        <NavLink to={`board/${record.id}`}>
           <p key={index}>{text}</p>
         </NavLink>
       ),
@@ -189,6 +171,7 @@ const ProjectManagement = () => {
                   })
                   .catch((error) => {
                     console.log(error);
+                    alert(error.response.data.content);
                   });
               }}
             >

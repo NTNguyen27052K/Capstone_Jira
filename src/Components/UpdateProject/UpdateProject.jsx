@@ -53,6 +53,7 @@ const UpdateProject = () => {
       id: "",
     },
     onSubmit: (values) => {
+      console.log(editorRef.current.getContent());
       // console.log({
       //   ...values,
       //   id: values.id,

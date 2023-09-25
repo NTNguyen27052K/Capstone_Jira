@@ -16,6 +16,9 @@ export const userSer = {
   getUser: (data) => {
     return https.get(`/api/Users/getUser?keyword=${data}`);
   },
+  getUserByProjectId: (data) => {
+    return https.get(`/api/Users/getUserByProjectId?idProject=${data}`);
+  },
   assignUserProject: (data) => {
     return https.post("/api/Project/assignUserProject", data);
   },

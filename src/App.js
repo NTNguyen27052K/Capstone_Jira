@@ -7,13 +7,16 @@ import FormSignIn from "./Components/FormSignIn/FormSignIn";
 import ProjectManagement from "./Components/ProjectManagement/ProjectManagement";
 import UpdateProject from "./Components/UpdateProject/UpdateProject";
 import DetailBoard from "./Components/DetailBoard/DetailBoard";
+import CreateTask from "./Components/CreateTask/CreateTask";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<FormSignIn />} />
+
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/createTask" element={<CreateTask />} />
 
         <Route path="/project" element={<HomeTemplate />}>
           <Route index element={<CreateProject />} />

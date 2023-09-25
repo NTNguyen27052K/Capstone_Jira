@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Layout, Menu, Item, theme, Breadcrumb } from "antd";
+import { Layout, Menu, Modal, theme, Breadcrumb } from "antd";
 
 import logoCyber from "./../../Assets/Imgage/iconCyber.png";
 import { NavLink, Outlet } from "react-router-dom";
 import "./homeTemplate.scss";
 import { useSelector } from "react-redux";
+import CreateTask from "../../Components/CreateTask/CreateTask";
 
 const { Header, Sider, Content } = Layout;
 
@@ -15,6 +16,18 @@ const HomeTemplate = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Layout className="min-h-screen">
       <div className="relative min-h-screen pl-[80px]">
@@ -64,36 +77,6 @@ const HomeTemplate = () => {
                   setBreadcrumb("Project management");
                 },
               },
-              {
-                key: "4",
-                icon: <i className="fa-solid fa-plus"></i>,
-                label: "Create project",
-              },
-              {
-                key: "5",
-                icon: <i className="fa-solid fa-magnifying-glass"></i>,
-                label: "Releases",
-              },
-              {
-                key: "6",
-                icon: <i className="fa-solid fa-magnifying-glass"></i>,
-                label: "Issues and filters",
-              },
-              {
-                key: "7",
-                icon: <i className="fa-solid fa-magnifying-glass"></i>,
-                label: "Pages",
-              },
-              {
-                key: "8",
-                icon: <i className="fa-solid fa-magnifying-glass"></i>,
-                label: "Reports",
-              },
-              {
-                key: "9",
-                icon: <i className="fa-solid fa-magnifying-glass"></i>,
-                label: "Components",
-              },
             ]}
           />
         </Sider>
@@ -127,6 +110,9 @@ const HomeTemplate = () => {
                   key: "1",
                   icon: <i className="fa-solid fa-plus"></i>,
                   label: "Create task",
+                  onClick: () => {
+                    showModal();
+                  },
                 },
                 {
                   key: "2",
@@ -137,6 +123,17 @@ const HomeTemplate = () => {
             />
           </Sider>
         </div>
+        <Modal
+          title="Create Task"
+          closeIcon={false}
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={null}
+          width={"700px"}
+        >
+          <CreateTask />
+        </Modal>
       </div>
       <Layout>
         <Header

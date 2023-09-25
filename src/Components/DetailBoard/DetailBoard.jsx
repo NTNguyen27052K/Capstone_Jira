@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./dtailBoard.scss";
-import { projectServ } from "../../Services/projectServices";
 import { useParams } from "react-router-dom";
-
 import { Avatar, Tag, Popover, Tooltip, Modal } from "antd";
 import Task from "../Task/Task";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProjectDetail,
-  getTask,
-  setProjectDetail,
-} from "../../Redux/slices/projectSliece";
-import ColumnGroup from "antd/es/table/ColumnGroup";
+import { getProjectDetail, getTask } from "../../Redux/slices/projectSliece";
 import { getAllStatus } from "../../Redux/slices/statusSliece";
 import { getAllPriority } from "../../Redux/slices/prioritySliece";
 import { getTaskType } from "../../Redux/slices/taskSlice";
 
 const DetailBoard = () => {
-  const [projetMembers, setProjetMember] = useState([]);
+  const [visEditer, setVisEditer] = useState(false);
   const { id } = useParams();
   const dispatch = useDispatch();
   const { projectDetail } = useSelector((state) => state.project);
@@ -26,23 +19,6 @@ const DetailBoard = () => {
     dispatch(getAllStatus());
     dispatch(getAllPriority(0));
     dispatch(getProjectDetail(id));
-    // async function dispatchData() {
-    //   const res = await dispatch(getProjectDetail(id));
-    //   console.log("ssss");
-    //   return res;
-    // }
-    // dispatchData();
-    // console.log("useEffect");
-    // projectServ
-    //   .getProjectDetail(id)
-    //   .then((result) => {
-    //     console.log(result.data.content);
-    //     setProjetMember(result.data.content);
-    //     // dispatch(setProjectDetail(result.data.content));
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   }, [id]);
   // console.log(projectDetail);
 
@@ -52,7 +28,12 @@ const DetailBoard = () => {
   };
 
   const handleCancel = () => {
+    // console.log("handler");
+    handler();
     setIsModalOpen(false);
+  };
+  const handler = () => {
+    setVisEditer(false);
   };
   return (
     <div>
@@ -116,17 +97,20 @@ const DetailBoard = () => {
         onCancel={handleCancel}
         width={900}
       >
-        <Task />
+        <Task visEditer={visEditer} />
       </Modal>
 
       <div className="dragDrop grid grid-cols-4 gap-4 mt-10">
         {projectDetail.lstTask?.map((item, index) => {
           return (
-            <div key={index} className="card bg-gray-200 h-auto rounded-md">
+            <div
+              key={index}
+              className="card bg-gray-200 h-auto rounded-md overflow-auto"
+            >
               <Tag
                 color={
                   item.statusName === "BACKLOG"
-                    ? ""
+                    ? "blue"
                     : item.statusName === "SELECTED FOR DEVELOPMENT"
                     ? "magenta"
                     : item.statusName === "DONE"
@@ -155,12 +139,46 @@ const DetailBoard = () => {
                           });
                       }}
                     >
-                      <p className="comment">{item.taskName}</p>
+                      <p className="comment mb-3">{item.taskName}</p>
                       <div className="flex justify-between items-center">
                         <div className="priority">
                           <p className="priorityTask">
-                            {item.taskTypeDetail?.taskType}{" "}
-                            {item.priorityTask?.priority}
+                            <span className="mr-2">
+                              {item.taskTypeDetail?.taskType === "bug" ? (
+                                <i
+                                  className="fa-solid fa-circle-exclamation fa-xl"
+                                  style={{ color: "#fa0000" }}
+                                />
+                              ) : (
+                                <i
+                                  className="fa-solid fa-circle-check fa-xl"
+                                  style={{ color: "#4fade6" }}
+                                />
+                              )}
+                            </span>
+                            <span>
+                              {item.priorityTask?.priority === "High" ? (
+                                <i
+                                  className="fa-solid fa-arrow-up fa-xl"
+                                  style={{ color: "#ff0000" }}
+                                />
+                              ) : item.priorityTask?.priority === "Medium" ? (
+                                <i
+                                  className="fa-solid fa-arrow-up fa-xl"
+                                  style={{ color: "#0000ff" }}
+                                />
+                              ) : item.priorityTask?.priority === "Low" ? (
+                                <i
+                                  className="fa-solid fa-arrow-down fa-xl"
+                                  style={{ color: "#00ff00" }}
+                                />
+                              ) : (
+                                <i
+                                  className="fa-solid fa-arrow-down fa-xl"
+                                  style={{ color: "#000000" }}
+                                />
+                              )}
+                            </span>
                           </p>
                         </div>
                         <div className="assigness">
