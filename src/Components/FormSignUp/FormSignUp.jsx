@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import { Input } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { userSer } from "../../Services/userServices";
 import { setLocal } from "../../Utils/localStore";
 import { useDispatch } from "react-redux";
@@ -9,7 +9,7 @@ import { setDataName } from "../../Redux/slices/userSlice";
 
 const FormSignUp = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -25,6 +25,9 @@ const FormSignUp = () => {
           console.log(result);
           setLocal("user", result.data.content);
           dispatch(setDataName(result.data.content));
+          setTimeout(() => {
+            navigate("/project");
+          }, [2000]);
         })
         .catch((errors) => {
           console.log(errors);

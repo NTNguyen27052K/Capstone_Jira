@@ -54,7 +54,7 @@ const HomeTemplate = () => {
               {
                 key: "1",
                 icon: <i className="fa-solid fa-clapperboard"></i>,
-                label: <NavLink to={"test"}>Cyber Board</NavLink>,
+                label: <NavLink to={"/project"}>Cyber Board</NavLink>,
                 onClick: () => {
                   setBreadcrumb("Test");
                 },

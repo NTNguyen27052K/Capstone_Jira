@@ -8,6 +8,7 @@ import ProjectManagement from "./Components/ProjectManagement/ProjectManagement"
 import UpdateProject from "./Components/UpdateProject/UpdateProject";
 import DetailBoard from "./Components/DetailBoard/DetailBoard";
 import CreateTask from "./Components/CreateTask/CreateTask";
+import Loading from "./Components/Loading/Loading";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/project" element={<HomeTemplate />}>
           <Route index element={<CreateProject />} />
           <Route path="createProject" element={<CreateProject />} />
+          <Route path="loading" element={<Loading />} />
           <Route path="test" element={<Test />} />
           <Route path="projectManagement" element={<ProjectManagement />} />
           <Route
